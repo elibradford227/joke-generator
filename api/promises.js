@@ -8,7 +8,7 @@ const getRequest = () => new Promise((resolve, reject) => {
     },
   })
     .then((response) => response.json())
-    .then((data) => { return data.setup; })
+    .then((data) => resolve(data))
     .catch(reject);
 });
 

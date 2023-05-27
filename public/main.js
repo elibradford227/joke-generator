@@ -23,46 +23,111 @@ import getRequest from '../api/promises';
 //   // ViewDirectorBasedOnUserAuthStatus();
 // };\
 
-const joke = getRequest();
-console.warn(joke);
+// const joke = [];
 
-const thirdCard = () => {
-  document.querySelector('#app').innerHTML = `
-  <h1>Joke Generator</h1>
-  <h4>JOKE SETUP</h4>
-  <h4>PUNCHLINE</h4>
-  <button id="getbut">GET ANOTHER JOKE</button>
-  `;
-  const getJoke = document.querySelector('#getbut');
-  getJoke.addEventListener('click', () => {
-    // eslint-disable-next-line no-use-before-define
-    secondCard();
-  });
-};
+// const pulledJoke = () => {
+//   getRequest().then((item) => {
+//     joke.push(item);
+//   });
+// };
 
-const secondCard = () => {
-  document.querySelector('#app').innerHTML = `
-  <h1>Joke Generator</h1>
-  <h4>${getRequest.then}</h4>
-  <button id="getbut">GET PUNCHLINE</button>
-  `;
-  const getJoke = document.querySelector('#getbut');
-  getJoke.addEventListener('click', () => {
-    thirdCard();
-  });
-};
+// const thirdCard = () => {
+//   document.querySelector('#app').innerHTML = `
+//   <h1>Joke Generator</h1>
+//   <h4>JOKE SETUP</h4>
+//   <h4>PUNCHLINE</h4>
+//   <button id="getbut">GET ANOTHER JOKE</button>
+//   `;
+//   const getJoke = document.querySelector('#getbut');
+//   getJoke.addEventListener('click', () => {
+//     // eslint-disable-next-line no-use-before-define
+//     secondCard();
+//   });
+// };
 
-const firstCard = () => {
-  document.querySelector('#app').innerHTML = `
-  <h1>Joke Generator</h1>
-  <button id="getbut">GET A JOKE</button>
-  `;
-  const getJoke = document.querySelector('#getbut');
-  getJoke.addEventListener('click', () => {
-    secondCard();
-  });
-};
+// const secondCard = () => {
+//   document.querySelector('#app').innerHTML = `
+//   <h1>Joke Generator</h1>
+//   <h4>${getRequest.then}</h4>
+//   <button id="getbut">GET PUNCHLINE</button>
+//   `;
+//   const getJoke = document.querySelector('#getbut');
+//   getJoke.addEventListener('click', () => {
+//     thirdCard();
+//   });
+// };
 
-firstCard();
+// const firstCard = () => {
+//   document.querySelector('#app').innerHTML = `
+//   <h1>Joke Generator</h1>
+//   <h1>${joke[0]}</h1>
+//   <button id="getbut">GET A JOKE</button>
+//   `;
+//   const getJoke = document.querySelector('#getbut');
+//   getJoke.addEventListener('click', () => {
+//     secondCard();
+//   });
+// };
+
+// const init = () => {
+//   pulledJoke();
+//   firstCard();
+// };
 
 // init();
+// setTimeout(() => {
+//   console.warn(joke[0]);
+// }, '1000');
+
+const renderToDom = (divId, htmlToRender) => {
+  const selectedDiv = document.querySelector(divId);
+  selectedDiv.innerHTML = htmlToRender;
+};
+
+const cardThree = () => {
+  getRequest().then((joke) => {
+    let domString = '';
+    domString += `
+     <p>${joke.delivery}</p>
+     <button id="getbut">GET A NEW JOKE</button>
+    `;
+    renderToDom('#app', domString);
+    const getJoke = document.querySelector('#getbut');
+    getJoke.addEventListener('click', () => {
+      // eslint-disable-next-line no-use-before-define
+      cardOne();
+    });
+  });
+};
+
+const cardTwo = () => {
+  getRequest().then((joke) => {
+    let domString = '';
+    domString += `
+     <p>${joke.setup}<p>
+     <button id="getbut">GET PUNCHLINE</button>
+    `;
+    renderToDom('#app', domString);
+    const getJoke = document.querySelector('#getbut');
+    getJoke.addEventListener('click', () => {
+      cardThree();
+    });
+  });
+};
+
+const cardOne = () => {
+  let domString = '';
+  domString += `
+   <p>Joke Generator</p>
+   <button id="getbut">GET A JOKE</button>
+   `;
+  renderToDom('#app', domString);
+  const getJoke = document.querySelector('#getbut');
+  getJoke.addEventListener('click', () => {
+    getRequest().then(cardTwo());
+  });
+};
+
+// getRequest().then((value) => console.warn(value));
+
+cardOne();
